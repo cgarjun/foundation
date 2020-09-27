@@ -1,0 +1,36 @@
+#!/usr/bin/env python
+
+import argparse
+from foundation.suite import suite
+
+def main(args):
+    a = suite.Suite(args.suite_root, args.suite_name)
+
+    if args.clone and args.source_suite:
+        if args.create or args.release:
+            raise IOError("create and release flags cannot be use with cloning")
+        a.clone(args.source_suite)
+        return True
+
+    if args.create:
+        if args.clone or args.release:
+            raise IOError("clone and release cannot be used with create")
+        a.create()
+    if args.release:
+        if args.clone or args.create:
+            raise IOError("clone and create cannot be used with create")
+        a.release()
+    
+    return True
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Default behavior is to add a profile to existing suite')
+    parser.add_argument("suite_root", help="Path to base suite dir")
+    parser.add_argument("suite_name", help="Name of suite that exist or you want to create")
+    parser.add_argument("--create", action="store_true", help="Create a new suite with given name")
+    parser.add_argument("--release", action="store_true", help="Switches current suite to the specified one")
+    parser.add_argument("--clone", action="store_true", help="Clone existing suite with given name")
+    parser.add_argument("--source_suite", help="Full path to the source suite", default=None)
+    args = parser.parse_args()
+    main(args)
