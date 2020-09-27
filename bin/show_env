@@ -1,0 +1,216 @@
+#!/usr/bin/env bash
+
+# Copyright © 2019 by Arjun Thekkumadathil
+
+# All rights reserved. No part of this publication/code may not be reproduced, 
+# distributed, or transmitted in any form or by any means, including 
+# photocopying, recording, or other electronic or mechanical methods, 
+# without the prior written permission of the publisher/author, except in the 
+# case noncommercial uses permitted by copyright law. For permission requests, 
+# write to the publisher, addressed “Attention: Nirvana Project,” 
+# at the address below.
+
+# email: arjun.thekkumadathil@gmail.com
+
+export N_SHOW=$1
+export N_SEQUENCE=$2
+export N_SHOT=$3
+export N_TASK=$4
+
+RED='\033[0;31m'
+NC='\033[0m'
+ORANGE='\033[0;33m'
+GREEN='\033[0;32m'
+
+GLOBAL_ERROR=0
+
+error_check()
+{
+    if [ -z $N_SHOW ]; then
+        echo -e $RED Please give a show name atleast $NC
+        GLOBAL_ERROR=1
+    fi
+}
+set_user_prompt()
+{
+    PS1='[\u@\h \033[0;32m $SHOW/$SEQUENCE/$SHOT/$TASK\033[0m]\$'
+
+}
+default_user_prompt()
+{
+    PS1='[\u@\h \W]\$'
+}
+
+set_show_bin()
+{
+    SHOW_BIN=$N_SHOW_ROOT/bin
+    export N_OLD_PATH=$PATH
+    export PATH=$SHOW_BIN:$PATH
+}
+unset_show_bin()
+{
+    export PATH=$N_OLD_PATH
+}
+debug_msg()
+{
+    if [ $DEBUG == 1 ];then
+        echo -e $ORANGE $1 $NC
+    fi
+}
+
+set_show_env()
+{
+    export N_SHOW_ROOT=$N_PROJECT_ROOT/$N_SHOW
+    export N_SHOW_CONFIG_DIR=$N_SHOW_ROOT/.config
+    export N_SHOW_SHELL_DIR=$N_SHOW_ROOT/.shell
+    export N_SHOW_WORK_DIR=$N_SHOW_ROOT/work
+    export N_SHOW_DATA_DIR=$N_SHOW_ROOT/data
+    export N_SHOW_MOV_DIR=$N_SHOW_ROOT/data
+    export N_SHOW_RENDER_DIR=$N_SHOW_ROOT/render
+    export N_SHOW_TEMP_DIR=$N_SHOW_ROOT/temp
+    export N_SHOW_TEXTURE_DIR=$N_SHOW_ROOT/texture
+
+    export N_SEQUENCE_DIR=$N_SHOW_WORK_DIR/$N_SEQUENCE
+    export N_SEQUENCE_CONFIG_DIR=$N_SEQUENCE_DIR/.config
+    export N_SEQUENCE_SHELL_DIR=$N_SEQUENCE_DIR/.shell
+    export N_SEQUENCE_TEMP_DIR=$N_SHOW_TEMP_DIR/$N_SEQUENCE
+
+    export N_SHOT_DIR=$N_SEQUENCE_DIR/$N_SEQUENCE
+    export N_SHOT_CONFIG_DIR=$N_SHOT_DIR/.config
+    export N_SHOT_SHELL_DIR=$N_SHOT_DIR/.shell
+    export N_SHOT_TEMP_DIR=$N_SEQUENCE_TEMP_DIR/$N_SHOT
+    export N_SHOT_DATA_DIR=$N_SHOW_DATA_DIR/$N_SEQUENCE/$N_SHOT
+    export N_SHOT_MOV_DIR=$N_SHOW_MOV_DIR/$N_SEQUENCE/$N_SHOT
+    export N_SHOT_RENDER_DIR=$N_SHOW_RENDER_DIR/$N_SEQUENCE/$N_SHOT
+    export N_SHOT_TEXTURE_DIR=$N_SHOW_TEXTURE_DIR/$N_SEQUENCE/$N_SHOT
+
+    export N_TASK_DIR=$N_SHOT_DIR/$N_TASK
+    export N_TASK_CONFIG_DIR=$N_TASK_DIR/.config
+    export N_TASK_SHELL_DIR=$N_TASK_DIR/.shell
+    export N_TASK_TEMP_DIR=$N_SHOW_TEMP_DIR/$N_SEQUENCE/$N_SHOT/$N_TASK
+}
+
+unset_show_env()
+{
+    unset N_SHOW
+    unset N_SEQUENCE
+    unset N_SHOT
+    unset N_TASK
+    unset N_SHOW_ROOT
+    unset N_SHOW_CONFIG_DIR
+    unset N_SHOW_SHELL_DIR
+    unset N_SHOW_WORK_DIR
+    unset N_SHOW_DATA_DIR
+    unset N_SHOW_MOV_DIR
+    unset N_SHOW_RENDER_DIR
+    unset N_SHOW_TEMP_DIR
+    unset N_SHOW_TEXTURE_DIR
+    unset N_SEQUENCE_DIR
+    unset N_SEQUENCE_CONFIG_DIR
+    unset N_SEQUENCE_SHELL_DIR
+    unset N_SEQUENCE_TEMP_DIR
+    unset N_SHOT_DIR
+    unset N_SHOT_CONFIG_DIR
+    unset N_SHOT_SHELL_DIR
+    unset N_SHOT_TEMP_DIR
+    unset N_SHOT_DATA_DIR
+    unset N_SHOT_MOV_DIR
+    unset N_SHOT_RENDER_DIR
+    unset N_SHOT_TEXTURE_DIR
+    unset N_TASK_DIR
+    unset N_TASK_CONFIG_DIR
+    unset N_TASK_SHELL_DIR
+    unset N_TASK_TEMP_DIR
+}
+
+dir_navigation()
+{
+    if [ ! -z $TASK ];then
+        cd $TASK_ROOT
+        return 0
+    fi
+    if [ ! -z $SHOT ];then
+        cd $SHOT_ROOT
+        return 0
+    fi
+    if [ ! -z $SEQUENCE ];then
+        cd $SEQUENCE_ROOT
+        return 0
+    fi
+    if [ ! -z $SHOW ];then
+        cd $N_SHOW_ROOT
+        return 0
+    fi
+}
+
+
+auto_source_dirs()
+{
+    local all_dir=($N_SHOW_SHELL_DIR $N_SEQUENCE_SHELL_DIR $N_SHOT_SHELL_DIR $N_TASK_SHELL_DIR)
+    for shell_dir in ${all_dir[@]};
+    do
+        # shell_dir=$d/.shell
+        debug_msg "Shell Pipeline Directory: "$shell_dir;
+        if [ -d $shell_dir ]; then
+            for f in $shell_dir/*;
+            do
+                source $f
+                debug_msg "Shell Source Files: "$f;
+            done
+        fi
+    done
+}
+
+exit_sse_env()
+{
+    unset_show_env;
+    unset_show_bin;
+    default_user_prompt;
+    echo -e $GREEN Exited show environment $NC
+}
+
+help_sse()
+{
+    echo -e "$GREEN Set Show Environment: This tool sets basic environment for the show $NC"
+    echo -e "$ORANGE Usage $NC"
+    echo -e "\t sse dmmy char arjun model"
+    echo -e "\t sse --exit"
+    echo -e "\t sse --help"
+
+    echo -e "$ORANGE Options $NC"
+    echo -e "\tSHOW\t Name of the show"
+    echo -e "\tSEQ\t Name of the SEQUENCE"
+    echo -e "\tSHOT\t Name of the SHOT"
+    echo -e "\tTASK\t Name of the task"
+    echo -e "\t--help\t Shows this help message"
+    echo -e "\t--exit\t Exits the show environment and unset the variables and show based settings"
+}
+
+main()
+{
+    if [ $N_SHOW == "--exit" ]; then
+        exit_sse_env;
+        return 0
+    fi
+
+    if [ $N_SHOW == "--help" ]; then
+        help_sse;
+        return 0
+    fi
+
+    error_check;
+
+    if [ $GLOBAL_ERROR == 1 ]; then
+        default_user_prompt;
+        return 1
+    fi
+
+    set_show_env;
+    set_show_bin;
+    dir_navigation;
+    # set_user_prompt;
+    # auto_source_dirs;
+    # dir_navigation;
+    # source nregistercommand;
+}
+main;
