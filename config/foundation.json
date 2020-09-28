@@ -1,6 +1,6 @@
 {
     "config_hierarchy":[
-        "$N_SOFTWARE_ROOT/$N_LOCATION/config",
+        "$N_SOFTWARE_ROOT/config/",
         "$N_PROJECT_ROOT/$N_SHOW/.config",
         "$N_PROJECT_ROOT/$N_SHOW/work/$N_SEQUENCE/.config",
         "$N_PROJECT_ROOT/$N_SHOW/work/$N_SEQUENCE/$N_SHOT/.config",

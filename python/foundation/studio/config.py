@@ -87,7 +87,7 @@ class Config(object):
         config_hirearchy = studio_util.get_foundation_config()["config_hierarchy"]
         for i in config_hirearchy:
             base_path = os.path.expandvars(i)
-            cfile = os.path.join(base_path, self.package_name, self.config_name, self.driver.extension)
+            cfile = os.path.join(base_path, self.package_name, "{0}.{1}".format(self.config_name, self.driver.extension))
             if os.path.exists(cfile):
                 config_files.append(cfile)
         return config_files
