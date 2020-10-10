@@ -61,33 +61,14 @@ debug_msg()
 set_show_env()
 {
     export N_SHOW_ROOT=$N_PROJECT_ROOT/$N_SHOW
-    export N_SHOW_CONFIG_DIR=$N_SHOW_ROOT/.config
-    export N_SHOW_SHELL_DIR=$N_SHOW_ROOT/.shell
+    export N_SHOW_CONFIG_DIR=$N_SHOW_ROOT/config
     export N_SHOW_WORK_DIR=$N_SHOW_ROOT/work
-    export N_SHOW_DATA_DIR=$N_SHOW_ROOT/data
-    export N_SHOW_MOV_DIR=$N_SHOW_ROOT/data
+    export N_SHOW_DATA_DIR=$N_SHOW_ROOT/movs
+    export N_SHOW_MOV_DIR=$N_SHOW_ROOT/products
     export N_SHOW_RENDER_DIR=$N_SHOW_ROOT/render
-    export N_SHOW_TEMP_DIR=$N_SHOW_ROOT/temp
-    export N_SHOW_TEXTURE_DIR=$N_SHOW_ROOT/texture
+    export N_SHOW_TEMP_DIR=$N_SHOW_ROOT/tmp
+    export N_SHOW_TEXTURE_DIR=$N_SHOW_ROOT/textures
 
-    export N_SEQUENCE_DIR=$N_SHOW_WORK_DIR/$N_SEQUENCE
-    export N_SEQUENCE_CONFIG_DIR=$N_SEQUENCE_DIR/.config
-    export N_SEQUENCE_SHELL_DIR=$N_SEQUENCE_DIR/.shell
-    export N_SEQUENCE_TEMP_DIR=$N_SHOW_TEMP_DIR/$N_SEQUENCE
-
-    export N_SHOT_DIR=$N_SEQUENCE_DIR/$N_SEQUENCE
-    export N_SHOT_CONFIG_DIR=$N_SHOT_DIR/.config
-    export N_SHOT_SHELL_DIR=$N_SHOT_DIR/.shell
-    export N_SHOT_TEMP_DIR=$N_SEQUENCE_TEMP_DIR/$N_SHOT
-    export N_SHOT_DATA_DIR=$N_SHOW_DATA_DIR/$N_SEQUENCE/$N_SHOT
-    export N_SHOT_MOV_DIR=$N_SHOW_MOV_DIR/$N_SEQUENCE/$N_SHOT
-    export N_SHOT_RENDER_DIR=$N_SHOW_RENDER_DIR/$N_SEQUENCE/$N_SHOT
-    export N_SHOT_TEXTURE_DIR=$N_SHOW_TEXTURE_DIR/$N_SEQUENCE/$N_SHOT
-
-    export N_TASK_DIR=$N_SHOT_DIR/$N_TASK
-    export N_TASK_CONFIG_DIR=$N_TASK_DIR/.config
-    export N_TASK_SHELL_DIR=$N_TASK_DIR/.shell
-    export N_TASK_TEMP_DIR=$N_SHOW_TEMP_DIR/$N_SEQUENCE/$N_SHOT/$N_TASK
 }
 
 unset_show_env()

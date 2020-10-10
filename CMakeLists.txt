@@ -15,6 +15,12 @@ rez_install_files(
     DESTINATION .
 )
 
+file(GLOB_RECURSE config_files "templates/*")
+rez_install_files(
+    ${config_files}
+    DESTINATION .
+)
+
 file(GLOB bin_files "bin/*")
 rez_install_files(
     ${bin_files}

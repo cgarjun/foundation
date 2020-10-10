@@ -15,8 +15,6 @@ import os, json
 from abc import ABCMeta, abstractmethod, abstractproperty
 from foundation.studio import utils
 
-studio_util = utils.StudioUtils()
-
 class IDriver(object):
     '''
         Interface class for file drivers like json / yaml / txt formats
@@ -72,22 +70,29 @@ class Config(object):
     def _config_from_package(self):
         '''
         '''
-        package_root_name = 'REZ_{0}_ROOT'.format(self.package_name.upper())
-        package_root = os.getenv(package_root_name, None)
-        c_file = os.path.join(package_root, "config/{0}.{1}".format(self.config_name, self.driver.extension))
-        if os.path.exists(c_file):
-            return c_file
-        else:
-            raise IOError("Package config file missing")
+        if self.package_name:
+            package_root_name = 'REZ_{0}_ROOT'.format(self.package_name.upper())
+            package_root = os.getenv(package_root_name, None)
+            c_file = os.path.join(package_root, "config/{0}.{1}".format(self.config_name, self.driver.extension))
+            if os.path.exists(c_file):
+                return c_file
+            else:
+                raise IOError("Package config file missing")
 
     def get_all_config_files(self):
         '''
         '''
-        config_files = [self._config_from_package()]
-        config_hirearchy = studio_util.get_foundation_config()["config_hierarchy"]
+        package_config = self._config_from_package()
+        config_files = []
+        if package_config:
+            config_files.append(package_config)
+        config_hirearchy = utils.get_foundation_config()["config_hierarchy"]
         for i in config_hirearchy:
             base_path = os.path.expandvars(i)
-            cfile = os.path.join(base_path, self.package_name, "{0}.{1}".format(self.config_name, self.driver.extension))
+            if self.package_name:
+                cfile = os.path.join(base_path, self.package_name, "{0}.{1}".format(self.config_name, self.driver.extension))
+            else:
+                cfile = os.path.join(base_path, "{0}.{1}".format(self.config_name, self.driver.extension))
             if os.path.exists(cfile):
                 config_files.append(cfile)
         return config_files

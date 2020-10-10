@@ -18,11 +18,14 @@ Below is the simple example of file structure I have been using
 │   └── pipesource
 ├── projects
 └── software
-    └── rez
-    └── config
+    └── rez (actual rez software)
+    └── config (facility level configs)
     └── internal (rez packages)
     └── external (rez packages)
-    └── suites
+    └── suites (facility level rez suites)
+         └── 0.0.1 (version)
+         └── 0.1.2 (version)
+         └── current (symlink to version)
 ```
 
 Once you have structure 
