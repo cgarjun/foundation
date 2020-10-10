@@ -24,3 +24,4 @@ def commands():
     env.PYTHONPATH.append("{root}/python")
     env.PATH.append("{root}/bin")
     env.FOUNDATION_CONFIG="{root}/config"
+    env.N_SHOW_TEMPLATE_DIR="{root}/templates"

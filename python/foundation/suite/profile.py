@@ -12,7 +12,7 @@
 
 import os
 import subprocess
-from foundation.studio.flog import logging
+from foundation.studio.nlog import logging
 from foundation.studio import config
 
 class Profile(object):

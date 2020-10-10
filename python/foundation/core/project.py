@@ -11,73 +11,116 @@
 # email: arjun.thekkumadathil@gmail.com
 
 import os
-from foundation.studio.flog import logging
+import json
+import shutil
+from foundation.studio.nlog import logging
 from foundation.studio import utils, config
 
-studio_util = utils.StudioUtils()
+class ProjectConfig:
+    def __init__(self, **config_data):
+        for k,v in config_data.items():
+            if isinstance(v,dict):
+                self.__dict__[k] = ProjectConfig(**v)
+            else:
+                self.__dict__[k] = v
 
-class Project(object):
-    def __init__(self, project_name, config_file, premissions, update_config):
-        self._project_name = project_name
+
+def get_show_spec(config_file=None):
+    """
+    docstring
+    """
+    project_config = json.load(open(config_file))
+    return ProjectConfig(**project_config)
+
+def get_template(template_name):
+    """
+    docstring
+    """
+    return os.path.join(os.getenv('N_SHOW_TEMPLATE_DIR', None), template_name)
+
+
+class ProjectEntity(object):
+    def __init__(self, config_file, template_name):
+        """
+        docstring
+        """
         self._config_file = config_file
-        self._premissions = premissions
-        self._config = None
-        self._update_config = update_config
+        self._template_name = template_name
+        
+        self._project_name = None
+        self._project_path = None
 
         self.initialize()
 
     def initialize(self):
-        if self.config_file is None:
-            driverObj = config.DriverJSON()
-            config_obj= config.Config('foundation', 'projects/{0}'.format(self.project_name), driverObj)
-            self.config = config_obj.resolve()
-        else:
-            raise NotImplementedError("Custom config failed")
+        """
+        docstring
+        """
+        show_spec = get_show_spec(self.config_file)
+        self.project_name = show_spec.name
+        projects_root_path = utils.get_projects_root()
+        self.project_path = os.path.join(projects_root_path, self.project_name)
 
-    def create_project(self):
-        if self.config['project']['short_name'] == self.project_name:
-            projects_root = studio_util.projects_root
-            project_root = os.path.join(projects_root, self.project_name)
-            try:
-                os.makedirs(project_root)
-            except OSError:
-                logging.error("Project {0} already exists".format(self.project_name))
-            return project_root
-        else:
-            raise KeyError("Project name doesn't match to short name in config")
+    def install_show_spec(self):
+        """
+        docstring
+        """
+        logging.info("Installing showspec...")
+        destination_config = os.path.join(self.project_path, 'config/showspec.json')
+        print destination_config
+        # shutil.copy(self.config_file, )
 
-    def create_prod_entities(self, project_root):
-        entities = self.config['project']['production_entities']
-        for entity in entities:
-            entity_root = os.path.join(project_root, entity)
-            try:
-                os.makedirs(entity_root)
-            except OSError:
-                logging.error("Project entity {0} already exists".format(entity_root))
-
-    def create_client_entities(self):
-        pass
 
     def create(self):
-        project_root = self.create_project()
-        self.create_prod_entities(project_root)
-
-    def install_metadata(self, force=False):
-        pass
-
-    @property
-    def project_name(self):
-        return self._project_name
+        """
+        docstring
+        """
+        logging.info("Creating show on disk...")
+        source_template = get_template(self.template_name)
+        logging.info("Source template: {0}".format(source_template))
+        logging.info("Destination template: {0}".format(self.project_path))
+        shutil.copytree(source_template, self.project_path)
+        self.install_show_spec()
 
     @property
     def config_file(self):
+        """
+        docstring
+        """
         return self._config_file
 
     @property
-    def config(self):
-        return self._config
+    def template_name(self):
+        """
+        docstring
+        """
+        return self._template_name
 
-    @config.setter
-    def config(self, value):
-        self._config = value
+    @property
+    def project_name(self):
+        """
+        docstring
+        """
+        return self._project_name
+    
+    @project_name.setter
+    def project_name(self, value):
+        """
+        docstring
+        """
+        self._project_name = value
+
+    @property
+    def project_path(self):
+        """
+        docstring
+        """
+        return self._project_path
+
+    @project_path.setter
+    def project_path(self, value):
+        """
+        docstring
+        """
+        self._project_path = value
 

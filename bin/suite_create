@@ -4,22 +4,22 @@ import argparse
 from foundation.suite import suite
 
 def main(args):
-    a = suite.Suite(args.suite_root, args.suite_name)
+    suite_object = suite.Suite(args.suite_root, args.suite_name)
 
     if args.clone and args.source_suite:
         if args.create or args.release:
             raise IOError("create and release flags cannot be use with cloning")
-        a.clone(args.source_suite)
+        suite_object.clone(args.source_suite)
         return True
 
     if args.create:
         if args.clone or args.release:
             raise IOError("clone and release cannot be used with create")
-        a.create()
+        suite_object.create()
     if args.release:
         if args.clone or args.create:
             raise IOError("clone and create cannot be used with create")
-        a.release()
+        suite_object.release()
     
     return True
 

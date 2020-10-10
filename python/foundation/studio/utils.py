@@ -13,30 +13,20 @@
 import os
 import json
 
-class StudioUtils(object):
-    def __init__(self, location=None):
-        self._location = location
 
-    def get_foundation_config(self):
+def get_software_root():
+    return os.environ['N_SOFTWARE_ROOT']
+
+def get_projects_root():
+    return os.getenv('N_PROJECT_ROOT', None)
+
+def get_location():
+    return os.getenv('N_LOCATION', None)
+
+def get_foundation_config():
+        foundation_config = os.path.join(os.getenv('REZ_FOUNDATION_ROOT', None), "config/foundation.json")
         data = None
-        with open(self.foundation_config, 'r') as fread:
+        with open(foundation_config, 'r') as fread:
             data = json.load(fread)
 
         return data
-
-    @property
-    def software_root(self):
-        return os.environ['N_SOFTWARE_ROOT']
-
-    @property
-    def projects_root(self):
-        return os.getenv('N_PROJECT_ROOT', None)
-
-    @property
-    def location(self):
-        return os.getenv('N_LOCATION', None)
-
-    @property
-    def foundation_config(self):
-        return os.path.join(os.getenv('REZ_FOUNDATION_ROOT', None), "config/foundation.json")
-
