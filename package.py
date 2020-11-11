@@ -11,13 +11,14 @@ description = "Production show environment"
 tools = [
     "profile_create",
     "suite_create",
-    "project_create",
+    "show_create",
     "asset_create",
     "config_info",
 ]
 
 requires = [
     "python-2.7+<3",
+    "nlogger-0+<1",
 ]
 
 def commands():

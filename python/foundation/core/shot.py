@@ -14,9 +14,9 @@
 class Shot(object):
     '''
     '''
-    def __init__(self, project_name, shot_name, shot_type, frame_range=(1001, 1100), temp_dir=True, config_dir=True):
-        self._project_name = project_name
-        self._shot_name = shot_name
+    def __init__(self, show, shot, shot_type, frame_range=(1001, 1100), temp_dir=True, config_dir=True):
+        self._show = show
+        self._shot = shot
         self._shot_type = shot_type
         self._frame_range = frame_range
         self._temp_dir = temp_dir
@@ -26,8 +26,8 @@ class Shot(object):
         pass
 
     @property
-    def shot_name(self):
-        return self._shot_name
+    def shot(self):
+        return self._shot
 
     @property
     def shot_type(self):

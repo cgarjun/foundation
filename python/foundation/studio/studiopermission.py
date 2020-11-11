@@ -12,6 +12,6 @@
 
 import os, grp
 
-def publish(owner, group, perm_path):
+def lock_directory(owner, group, perm_path, recursive=True):
     group_id = grp.getgrnam(group)
     print dir(group_id)

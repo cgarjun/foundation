@@ -12,8 +12,9 @@
 
 import os
 import subprocess
-from foundation.studio.nlog import logging
+from nlogger.logger import logging
 from foundation.studio import config
+
 
 class Profile(object):
     '''
@@ -26,6 +27,12 @@ class Profile(object):
         self._config = None
         self.force = force
         self._set_suite_mapper()
+
+    def __repr__(self):
+        """
+        docstring
+        """
+        return "{0}:{1}".format(self.suite_dir, self._suite_name)
 
     def _set_suite_mapper(self):
         '''

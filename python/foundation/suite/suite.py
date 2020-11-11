@@ -13,7 +13,7 @@
 import os
 import shutil
 import subprocess
-from foundation.studio.nlog import logging
+from nlogger.logger import logging
 
 class Suite(object):
     '''

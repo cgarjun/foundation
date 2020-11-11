@@ -15,46 +15,55 @@ import os
 
 class Context(object):
 
-    def __init__(self, show=None, entity_type=None, entity_name=None, task=None):
+    def __init__(self, show=None, sequence=None, shot=None, task=None):
         self._show = show
-        self._entity_type = entity_type
-        self._entity_name = entity_name
+        self._sequence = sequence
+        self._shot = shot
         self._task = task
 
     @classmethod
     def get_from_env(cls):
         show = None
-        entity_type = None
-        entity_name = None
+        sequence = None
+        shot = None
         task=None
         show = os.getenv('N_SHOW', None)
         if show:
             show = show
 
-        entity_type = os.getenv('N_ENTITY_TYPE', None)
-        if entity_type:
-            entity_type = entity_type
+        sequence = os.getenv('N_sequence', None)
+        if sequence:
+            sequence = sequence
 
-        entity_name = os.getenv('N_ENTITY', None)
-        if entity_name:
-            entity_name = entity_name
+        shot = os.getenv('N_ENTITY', None)
+        if shot:
+            shot = shot
 
         task = os.getenv('N_TASK', None)
         if task:
             task = task
-        return cls(show, entity_type, entity_name, task)
+        return cls(show, sequence, shot, task)
+
+    def get_shot_type(self):
+        """
+        docstring
+        """
+        if self.shot:
+            return 'SHOT_TYPE'
+        else:
+            raise AttributeError('Shot not defined in the Context instance')
 
     @property
     def show(self):
         return self._show
 
     @property
-    def entity_type(self):
-        return self._entity_type
+    def sequence(self):
+        return self._sequence
 
     @property
-    def entity_name(self):
-        return self._entity_name
+    def shot(self):
+        return self._shot
 
     @property
     def task(self):

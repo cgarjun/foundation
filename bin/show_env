@@ -69,6 +69,8 @@ set_show_env()
     export N_SHOW_TEMP_DIR=$N_SHOW_ROOT/tmp
     export N_SHOW_TEXTURE_DIR=$N_SHOW_ROOT/textures
 
+    export N_SHOT_DIR = 
+
 }
 
 unset_show_env()
