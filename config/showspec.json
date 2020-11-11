@@ -1,0 +1,15 @@
+{
+    "name": "dummy",
+    "full_name": "dummy_nicklodeon",
+    "fps": 30,
+    "full_resolution": {
+                        "width": 1920,
+                        "height": 1080,
+                        "aspect_ratio": 1
+                        },
+    "half_resolution": {
+        "width": 960,
+        "height": 540,
+        "aspect_ratio": 1
+    }
+}

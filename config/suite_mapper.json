@@ -1,8 +1,5 @@
 {
     "foundation":{"prefix":null,
                 "suffix":null,
-                "packages":["foundation"]},
-    "sample":{"prefix":null,
-                "suffix":null,
-             "packages":["foundation"]}
+                "packages":["foundation-0.0.1", "pathresolver-0.0.1"]}
 }

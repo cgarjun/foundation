@@ -13,20 +13,30 @@
 import os
 import json
 
-
 def get_software_root():
     return os.environ['N_SOFTWARE_ROOT']
 
 def get_projects_root():
-    return os.getenv('N_PROJECT_ROOT', None)
+    return os.getenv('N_SHOW_ROOT', None)
 
 def get_location():
     return os.getenv('N_LOCATION', None)
 
 def get_foundation_config():
-        foundation_config = os.path.join(os.getenv('REZ_FOUNDATION_ROOT', None), "config/foundation.json")
-        data = None
-        with open(foundation_config, 'r') as fread:
-            data = json.load(fread)
+    foundation_config = os.path.join(os.getenv('REZ_FOUNDATION_ROOT', None), "config/foundation.json")
+    data = None
+    with open(foundation_config, 'r') as fread:
+        data = json.load(fread)
 
-        return data
+    return data
+
+def get_npathx_config():
+    """
+    docstring
+    """
+    npathx_config = os.path.join(os.getenv('REZ_FOUNDATION_ROOT', None), "config/npathx.json")
+    data = None
+    with open(npathx_config, 'r') as fread:
+        data = json.load(fread)
+
+    return data

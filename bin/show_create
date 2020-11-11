@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+import argparse
+from foundation.core import show
+
+def main(args):
+    show_obj = show.Show(args.show, args.template_name)
+    show_obj.create()
+    return True
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description='Quick tool to kick start a project')
+    parser.add_argument("show", help="Name of the Show / Project")
+    parser.add_argument("template_name", help="Show structure template (3d_feature)")
+    args = parser.parse_args()
+    main(args)
